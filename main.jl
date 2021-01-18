@@ -4,6 +4,7 @@ using Flux: onehotbatch, onecold, crossentropy
 using Flux: @epochs
 using Statistics
 using MLDatasets
+using Serialization: serialize, deserialize
 
 # Load the Data
 println("Loading data")
@@ -48,9 +49,9 @@ end
 
 println("Getting first predictions")
 # Getting predictions
-y = model(x_train)
+oy = model(x_train)
 # Decoding predictions
-y = onecold(y)
+y = onecold(oy, 0:9)
 println("Prediction of first image: $(y[1])")
 
 accuracy(y,ye) = mean(onecold(y) .== onecold(ye))
@@ -68,7 +69,7 @@ number_epochs = 10
 println("Saving model")
 open(io -> serialize(io, model), "model.jls", "w")
 
-ny = model(x_train)
-ny = onecold(y)
+ony = model(x_train)
+ny = onecold(ony, 0:9)
 println("Prediction after train: $(ny[1])")
-accuracy(model(x_train), y_train)
+accuracy(model(x_valid), y_valid)
