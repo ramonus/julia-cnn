@@ -1,6 +1,6 @@
 using Flux
 using Flux: Data.DataLoader
-using Flux: onehotbatch, onecold, crossentropy
+using Flux: onehotbatch, onecold, crossentropy, throttle
 using Flux: @epochs
 using Statistics
 using MLDatasets
@@ -63,8 +63,10 @@ opt = Descent(lr)
 
 ps = Flux.params(model)
 
+evalcb() = @show(loss(x_train, y_train))
+
 number_epochs = 10
-@epochs number_epochs Flux.train!(loss, ps, train_data, opt)
+@epochs number_epochs Flux.train!(loss, ps, train_data, opt, cb=throttle(evalcb, 5))
 
 println("Saving model")
 open(io -> serialize(io, model), "model.jls", "w")
@@ -72,4 +74,4 @@ open(io -> serialize(io, model), "model.jls", "w")
 ony = model(x_train)
 ny = onecold(ony, 0:9)
 println("Prediction after train: $(ny[1])")
-accuracy(model(x_valid), y_valid)
+println("Accuracy: $(accuracy(model(x_valid), y_valid))")
