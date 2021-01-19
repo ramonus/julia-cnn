@@ -19,3 +19,6 @@ cd to the project folder:
 ```bash
 julia mnist.jl
 ```
+
+### Saving and loading
+The script automatically saves and loads a model if available.
