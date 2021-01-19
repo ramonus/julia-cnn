@@ -1,0 +1,4 @@
+[deps]
+Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
+ImageView = "86fae568-95e7-573e-a6b2-d8a6b900c9ef"
+MLDatasets = "eb30cadb-4394-5ae3-aed4-317e484a6458"
