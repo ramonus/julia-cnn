@@ -8,8 +8,8 @@ using Serialization: serialize, deserialize
 
 # Load the Data
 println("Loading data")
-x_train, y_train = MLDatasets.MNIST.traindata()
-x_valid, y_valid = MLDatasets.MNIST.testdata()
+x_train, y_train = FashionMNIST.traindata()
+x_valid, y_valid = FashionMNIST.testdata()
 
 # Add the channel layer
 x_train = Flux.unsqueeze(x_train, 3)
