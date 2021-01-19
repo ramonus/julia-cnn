@@ -1,4 +1,4 @@
-# Julia CNN MNIST
+# Julia CNN FashionMNIST
 
 Welcome to a simple example of cnn training with Julia, using Flux.jl.
 

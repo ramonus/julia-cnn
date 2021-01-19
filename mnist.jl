@@ -46,13 +46,16 @@ else
     println("Loading model")
     model = open(io -> deserialize(io), "model.jls")
 end
-
+names = FashionMNIST.classnames()
 println("Getting first predictions")
 # Getting predictions
 oy = model(x_train)
 # Decoding predictions
-y = onecold(oy, 0:9)
-println("Prediction of first image: $(y[1])")
+y = onecold(oy, names)
+n = rand(1:size(x_train, 4))
+
+println("Prediction of random image($n): $(y[n])")
+println("Real value: $(onecold(y_train[:,n], names))")
 
 accuracy(y,ye) = mean(onecold(y) .== onecold(ye))
 loss(x,y) = Flux.crossentropy(model(x), y)
@@ -63,15 +66,16 @@ opt = Descent(lr)
 
 ps = Flux.params(model)
 
-evalcb() = @show(loss(x_train, y_train))
+evalcb() = loss(x_train, y_train)
 
 number_epochs = 10
-@epochs number_epochs Flux.train!(loss, ps, train_data, opt, cb=throttle(evalcb, 5))
-
+println("Loss before: $(evalcb())")
+@epochs number_epochs Flux.train!(loss, ps, train_data, opt)
+println("Loss after: $(evalcb())")
 println("Saving model")
 open(io -> serialize(io, model), "model.jls", "w")
 
 ony = model(x_train)
-ny = onecold(ony, 0:9)
-println("Prediction after train: $(ny[1])")
+ny = onecold(ony, names)
+println("Prediction after train($n): $(ny[n])")
 println("Accuracy: $(accuracy(model(x_valid), y_valid))")
