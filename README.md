@@ -17,5 +17,5 @@ Pkg.add("MLDatasets")
 ## Run
 cd to the project folder:
 ```bash
-julia main.jl
+julia mnist.jl
 ```
